@@ -2,17 +2,22 @@
 
 export default class CalendarForm extends Component {
 	state = {
-		firstName: '',
-		lastName: '',
-		email: '',
-		date: '',
-		time: '',
+		meeting: {
+			firstName: '',
+			lastName: '',
+			email: '',
+			date: '',
+			time: '',
+		},
+		errors: [],
 	};
 
 	inputChange = (e) => {
 		const { name, value } = e.target;
 		this.setState({
-			[name]: value,
+			meeting: {
+				[name]: value,
+			},
 		});
 	};
 
@@ -21,11 +26,42 @@ export default class CalendarForm extends Component {
 
 		const { onSubmit } = this.props;
 
-		onSubmit(this.state);
+		this.validateForm();
+
+		if (this.state.errors.length === 0) {
+			onSubmit(this.state.meeting);
+		}
 	};
+
+	validateForm() {
+		const { formItems } = this.props;
+
+		formItems.forEach(({ name, label, required, pattern = null }) => {
+			if (required) {
+				if (this.state.meeting[name] === '') {
+					this.setState((state) => ({
+						errors: [...state.errors, `Dane w polu ${label} są wymagane!`],
+					}));
+				}
+			}
+
+			if (pattern) {
+				const reg = new RegExp(pattern);
+				if (!reg.test(this.state.meeting[name])) {
+					this.setState((state) => ({
+						errors: [
+							...state.errors,
+							`Dane w polu ${label} nie są w odpowiednim formacie!`,
+						],
+					}));
+				}
+			}
+		});
+	}
 
 	render() {
 		const { formItems } = this.props;
+
 		const inputs = formItems.map(({ name, label, type }, index) => {
 			return (
 				<div key={index}>
@@ -40,12 +76,13 @@ export default class CalendarForm extends Component {
 				</div>
 			);
 		});
-
 		return (
-			<form onSubmit={this.handleSubmit}>
-				{inputs}
-				<input type='submit' value={'Dodaj spotkanie'} />
-			</form>
+			<>
+				<form onSubmit={this.handleSubmit}>
+					{inputs}
+					<input type='submit' value={'Dodaj spotkanie'} />
+				</form>
+			</>
 		);
 	}
 }

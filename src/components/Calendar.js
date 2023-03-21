@@ -42,11 +42,22 @@ export default class Calendar extends Component {
 				<CalendarForm
 					onSubmit={this.addMeeting}
 					formItems={[
-						{ name: 'firstName', label: 'Imię', type: 'text' },
-						{ name: 'lastName', label: 'Nazwisko', type: 'text' },
-						{ name: 'email', label: 'Email', type: 'email' },
-						{ name: 'date', label: 'Data', type: 'date' },
-						{ name: 'time', label: 'Godzina', type: 'time' },
+						{ name: 'firstName', label: 'Imię', type: 'text', required: true },
+						{
+							name: 'lastName',
+							label: 'Nazwisko',
+							type: 'text',
+							required: true,
+						},
+						{
+							name: 'email',
+							label: 'Email',
+							type: 'email',
+							required: true,
+							pattern: '[0-9a-z_.-]+@[0-9a-z.-]+.[a-z]{2,3}',
+						},
+						{ name: 'date', label: 'Data', type: 'date', required: true },
+						{ name: 'time', label: 'Godzina', type: 'time', required: true },
 					]}
 				/>
 				<CalendarList
