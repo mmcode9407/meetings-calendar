@@ -39,7 +39,16 @@ export default class Calendar extends Component {
 	render() {
 		return (
 			<div>
-				<CalendarForm onSubmit={this.addMeeting} />
+				<CalendarForm
+					onSubmit={this.addMeeting}
+					formItems={[
+						{ name: 'firstName', label: 'Imię', type: 'text' },
+						{ name: 'lastName', label: 'Nazwisko', type: 'text' },
+						{ name: 'email', label: 'Email', type: 'email' },
+						{ name: 'date', label: 'Data', type: 'date' },
+						{ name: 'time', label: 'Godzina', type: 'time' },
+					]}
+				/>
 				<CalendarList
 					meetings={this.state.meetings}
 					onClick={this.removeMeeting}

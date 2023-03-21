@@ -25,50 +25,25 @@ export default class CalendarForm extends Component {
 	};
 
 	render() {
-		const { firstName, lastName, email, date, time } = this.state;
+		const { formItems } = this.props;
+		const inputs = formItems.map(({ name, label, type }, index) => {
+			return (
+				<div key={index}>
+					<label htmlFor={name}>{`${label}:`}</label>
+					<input
+						type={type}
+						name={name}
+						id={name}
+						value={this.state[name]}
+						onChange={this.inputChange}
+					/>
+				</div>
+			);
+		});
 
 		return (
 			<form onSubmit={this.handleSubmit}>
-				<label htmlFor='firstName'>Imię:</label>
-				<input
-					type='text'
-					name='firstName'
-					id='firstName'
-					value={firstName}
-					onChange={this.inputChange}
-				/>
-				<label htmlFor='lastName'>Nazwisko:</label>
-				<input
-					type='text'
-					name='lastName'
-					id='lastName'
-					value={lastName}
-					onChange={this.inputChange}
-				/>
-				<label htmlFor='email'>Email:</label>
-				<input
-					type='email'
-					name='email'
-					id='email'
-					value={email}
-					onChange={this.inputChange}
-				/>
-				<label htmlFor='date'>Data:</label>
-				<input
-					type='date'
-					name='date'
-					id='date'
-					value={date}
-					onChange={this.inputChange}
-				/>
-				<label htmlFor='time'>Godzina:</label>
-				<input
-					type='time'
-					name='time'
-					id='time'
-					value={time}
-					onChange={this.inputChange}
-				/>
+				{inputs}
 				<input type='submit' value={'Dodaj spotkanie'} />
 			</form>
 		);
