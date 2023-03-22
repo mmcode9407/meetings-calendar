@@ -38,7 +38,14 @@ export default class Calendar extends Component {
 
 	render() {
 		return (
-			<div>
+			<section>
+				<header>
+					<h1>Meetings Calendar</h1>
+					<div>
+						<button>Dodaj spotkanie</button>
+						<button>Usuń wszystkie</button>
+					</div>
+				</header>
 				<CalendarForm
 					onSubmit={this.addMeeting}
 					formItems={[
@@ -84,7 +91,7 @@ export default class Calendar extends Component {
 					meetings={this.state.meetings}
 					onClick={this.removeMeeting}
 				/>
-			</div>
+			</section>
 		);
 	}
 }

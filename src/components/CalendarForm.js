@@ -98,12 +98,14 @@ export default class CalendarForm extends Component {
 		});
 
 		return (
-			<>
+			<div>
+				<h2>Dodaj Spotkanie</h2>
 				<form onSubmit={this.handleSubmit} noValidate>
 					{inputs}
-					<input type='submit' value={'Dodaj spotkanie'} />
+					<button type='submit'>Dodaj Spotkanie</button>
+					<button>Anuluj</button>
 				</form>
-			</>
+			</div>
 		);
 	}
 }
