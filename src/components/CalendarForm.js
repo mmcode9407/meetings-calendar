@@ -14,10 +14,13 @@ export default class CalendarForm extends Component {
 
 	inputChange = (e) => {
 		const { name, value } = e.target;
-		this.setState({
-			meeting: {
-				[name]: value,
-			},
+		this.setState((state) => {
+			return {
+				meeting: {
+					...state.meeting,
+					[name]: value,
+				},
+			};
 		});
 	};
 
@@ -26,37 +29,53 @@ export default class CalendarForm extends Component {
 
 		const { onSubmit } = this.props;
 
-		this.validateForm();
+		const errors = this.validateForm();
 
-		if (this.state.errors.length === 0) {
+		if (errors.length === 0) {
 			onSubmit(this.state.meeting);
+			this.setState({
+				meeting: {
+					firstName: '',
+					lastName: '',
+					email: '',
+					date: '',
+					time: '',
+				},
+				errors: [],
+			});
+		} else {
+			this.setState({ errors: errors });
 		}
 	};
 
 	validateForm() {
 		const { formItems } = this.props;
+		const errors = [];
 
-		formItems.forEach(({ name, label, required, pattern = null }) => {
+		formItems.forEach(({ name, label, required = false, pattern = null }) => {
 			if (required) {
 				if (this.state.meeting[name] === '') {
-					this.setState((state) => ({
-						errors: [...state.errors, `Dane w polu ${label} są wymagane!`],
-					}));
+					errors.push(`Dane w polu ${label} są wymagane!`);
 				}
 			}
 
 			if (pattern) {
-				const reg = new RegExp(pattern);
+				const reg = new RegExp(pattern, 'gi');
 				if (!reg.test(this.state.meeting[name])) {
-					this.setState((state) => ({
-						errors: [
-							...state.errors,
-							`Dane w polu ${label} nie są w odpowiednim formacie!`,
-						],
-					}));
+					errors.push(`Dane w polu ${label} nie są w odpowiednim formacie!`);
 				}
 			}
 		});
+
+		return errors;
+	}
+
+	showError(label) {
+		const errorsByLabel = this.state.errors.filter((item) =>
+			item.includes(label)
+		);
+
+		return errorsByLabel.map((err, index) => <p key={index}>{err}</p>);
 	}
 
 	render() {
@@ -70,15 +89,17 @@ export default class CalendarForm extends Component {
 						type={type}
 						name={name}
 						id={name}
-						value={this.state[name]}
+						value={this.state.meeting[name]}
 						onChange={this.inputChange}
 					/>
+					{this.state.errors.length > 0 ? this.showError(label) : null}
 				</div>
 			);
 		});
+
 		return (
 			<>
-				<form onSubmit={this.handleSubmit}>
+				<form onSubmit={this.handleSubmit} noValidate>
 					{inputs}
 					<input type='submit' value={'Dodaj spotkanie'} />
 				</form>
