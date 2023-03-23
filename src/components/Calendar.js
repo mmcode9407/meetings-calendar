@@ -82,6 +82,7 @@ export default class Calendar extends Component {
 							type: 'text',
 							required: true,
 							pattern: '[a-z]{3,}',
+							placeholder: 'Min 3 znaki...',
 						},
 						{
 							name: 'lastName',
@@ -89,6 +90,7 @@ export default class Calendar extends Component {
 							type: 'text',
 							required: true,
 							pattern: '[a-z]{3,}',
+							placeholder: 'Min 3 znaki...',
 						},
 						{
 							name: 'email',
@@ -96,6 +98,7 @@ export default class Calendar extends Component {
 							type: 'email',
 							required: true,
 							pattern: '[0-9a-z_.-]+@[0-9a-z.-]+.[a-z]{2,3}',
+							placeholder: 'example@example.pl',
 						},
 						{
 							name: 'date',

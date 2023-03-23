@@ -114,27 +114,30 @@ export default class CalendarForm extends Component {
 	render() {
 		const { formItems, isShow } = this.props;
 
-		const inputs = formItems.map(({ name, label, type }, index) => {
-			return (
-				<div key={index} className='form__item'>
-					<label
-						className='form__item-label'
-						htmlFor={name}>{`${label}:`}</label>
-					<input
-						className='form__item-input'
-						type={type}
-						min={type === 'date' ? this.restrictPastDates() : null}
-						name={name}
-						id={name}
-						value={this.state.meeting[name]}
-						onChange={this.inputChange}
-					/>
-					{this.state.errors.length > 0 ? (
-						<div className='form__error-box'>{this.showError(label)}</div>
-					) : null}
-				</div>
-			);
-		});
+		const inputs = formItems.map(
+			({ name, label, type, placeholder = null }, index) => {
+				return (
+					<div key={index} className='form__item'>
+						<label
+							className='form__item-label'
+							htmlFor={name}>{`${label}:`}</label>
+						<input
+							className='form__item-input'
+							type={type}
+							min={type === 'date' ? this.restrictPastDates() : null}
+							name={name}
+							placeholder={placeholder}
+							id={name}
+							value={this.state.meeting[name]}
+							onChange={this.inputChange}
+						/>
+						{this.state.errors.length > 0 ? (
+							<div className='form__error-box'>{this.showError(label)}</div>
+						) : null}
+					</div>
+				);
+			}
+		);
 
 		return (
 			<div
