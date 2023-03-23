@@ -3,6 +3,10 @@ import { getData, addData, removeData } from '../calendarProvider';
 import CalendarForm from './CalendarForm';
 import CalendarList from './CalendarList';
 import CalendarHeader from './CalendarHeader';
+import Button from './Button';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
 import './Calendar.css';
 
@@ -59,10 +63,20 @@ export default class Calendar extends Component {
 	render() {
 		return (
 			<section className='manager'>
-				<CalendarHeader
-					showForm={this.toogleShowForm}
-					removeAllMeeting={this.removeAllMeeting}
-				/>
+				<CalendarHeader>
+					<Button
+						onClick={this.toogleShowForm}
+						className={'menu__btn btn'}
+						text={'Dodaj spotkanie'}
+						icon={<FontAwesomeIcon icon={faPlus} />}
+					/>
+					<Button
+						onClick={this.removeAllMeeting}
+						className={'menu__btn btn'}
+						text={'Usuń wszystkie'}
+						icon={<FontAwesomeIcon icon={faTrashCan} />}
+					/>
+				</CalendarHeader>
 				<CalendarForm
 					onSubmit={this.addMeeting}
 					formItems={[
