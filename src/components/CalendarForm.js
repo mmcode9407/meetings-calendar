@@ -1,5 +1,6 @@
 ﻿import React, { Component } from 'react';
 import Button from './Button';
+import CalendarFormItem from './CalendarFormItem';
 import './CalendarForm.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRectangleXmark } from '@fortawesome/free-regular-svg-icons';
@@ -87,58 +88,24 @@ export default class CalendarForm extends Component {
 		return errors;
 	}
 
-	showError(label) {
-		const errorsByLabel = this.state.errors.filter((item) =>
-			item.includes(label)
-		);
+	renderFormInputs() {
+		const { formItems } = this.props;
 
-		return errorsByLabel.map((err, index) => (
-			<p className='form__error-text' key={index}>
-				{err}
-			</p>
-		));
-	}
-
-	restrictPastDates() {
-		const date = new Date();
-		const day = this.formatText(date.getDate());
-		const month = this.formatText(date.getMonth() + 1);
-		const year = date.getFullYear();
-
-		return `${year}-${month}-${day}`;
-	}
-
-	formatText(unit) {
-		return `0${unit}`.length > 2 ? unit : `0${unit}`;
+		return formItems.map((item, index) => {
+			return (
+				<CalendarFormItem
+					key={index}
+					item={item}
+					formStateMeeting={this.state.meeting}
+					formStateErrors={this.state.errors}
+					inputChange={this.inputChange}
+				/>
+			);
+		});
 	}
 
 	render() {
-		const { formItems, isShow } = this.props;
-
-		const inputs = formItems.map(
-			({ name, label, type, placeholder = null }, index) => {
-				return (
-					<div key={index} className='form__item'>
-						<label
-							className='form__item-label'
-							htmlFor={name}>{`${label}:`}</label>
-						<input
-							className='form__item-input'
-							type={type}
-							min={type === 'date' ? this.restrictPastDates() : null}
-							name={name}
-							placeholder={placeholder}
-							id={name}
-							value={this.state.meeting[name]}
-							onChange={this.inputChange}
-						/>
-						{this.state.errors.length > 0 ? (
-							<div className='form__error-box'>{this.showError(label)}</div>
-						) : null}
-					</div>
-				);
-			}
-		);
+		const { isShow } = this.props;
 
 		return (
 			<div
@@ -153,7 +120,7 @@ export default class CalendarForm extends Component {
 					}>
 					<h2 className='form__title'>Dodaj Spotkanie</h2>
 					<form className='form'>
-						{inputs}
+						{this.renderFormInputs()}
 						<div className='form__buttons'>
 							<Button
 								onClick={this.handleSubmit}
