@@ -1,10 +1,8 @@
 ﻿import React, { Component } from 'react';
-import Button from './Button';
+import Button from '../button';
 import CalendarFormItem from './CalendarFormItem';
 import './CalendarForm.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRectangleXmark } from '@fortawesome/free-regular-svg-icons';
-import { faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon, faRectangleXmark, faFloppyDisk } from '../icons';
 
 export default class CalendarForm extends Component {
 	state = {

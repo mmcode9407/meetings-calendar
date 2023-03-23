@@ -1,16 +1,14 @@
 ﻿import React, { Component } from 'react';
-import { getData, addData, removeData } from '../calendarProvider';
-import CalendarForm from './CalendarForm';
-import CalendarList from './CalendarList';
-import CalendarHeader from './CalendarHeader';
-import CalendarListItem from './CalendarListItem';
-import Button from './Button';
+import { getData, addData, removeData } from '../../api';
+import CalendarForm from '../calendarForm';
+import { CalendarList, CalendarListItem } from '../calendarList';
+import CalendarHeader from '../calendarHeader';
+import Button from '../button';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon, faPlus, faTrashCan } from '../icons';
 
 import './Calendar.css';
-import { formItems } from '../formItems';
+import formItems from '../../data';
 
 export default class Calendar extends Component {
 	state = {

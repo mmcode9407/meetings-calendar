@@ -1,7 +1,5 @@
 ﻿import React, { Component } from 'react';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHandshake } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon, faHandshake } from '../icons';
 
 export default class CalendarHeader extends Component {
 	render() {
