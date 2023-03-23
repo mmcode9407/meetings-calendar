@@ -2,10 +2,15 @@
 import { getData, addData, removeData } from '../calendarProvider';
 import CalendarForm from './CalendarForm';
 import CalendarList from './CalendarList';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHandshake } from '@fortawesome/free-regular-svg-icons';
+import { faPlus, faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import './Calendar.css';
 
 export default class Calendar extends Component {
 	state = {
 		meetings: [],
+		isFormShow: false,
 	};
 
 	addMeeting = (data) => {
@@ -28,6 +33,22 @@ export default class Calendar extends Component {
 		);
 	};
 
+	removeAllMeeting = () => {
+		this.state.meetings.forEach((meeting) => {
+			removeData(meeting.id).then(
+				getData().then((data) => {
+					this.setState({
+						meetings: data,
+					});
+				})
+			);
+		});
+	};
+
+	toogleShowForm = () => {
+		this.setState({ isFormShow: !this.state.isFormShow });
+	};
+
 	componentDidMount() {
 		getData().then((data) => {
 			this.setState({
@@ -38,12 +59,18 @@ export default class Calendar extends Component {
 
 	render() {
 		return (
-			<section>
-				<header>
-					<h1>Meetings Calendar</h1>
-					<div>
-						<button>Dodaj spotkanie</button>
-						<button>Usuń wszystkie</button>
+			<section className='manager'>
+				<header className='manager__menu menu'>
+					<h1 className='menu__title'>
+						<FontAwesomeIcon icon={faHandshake} /> Harmonogram spotkań
+					</h1>
+					<div className='menu__buttons'>
+						<button className='menu__btn btn' onClick={this.toogleShowForm}>
+							<FontAwesomeIcon icon={faPlus} /> Dodaj spotkanie
+						</button>
+						<button className='menu__btn btn' onClick={this.removeAllMeeting}>
+							<FontAwesomeIcon icon={faTrashCan} /> Usuń wszystkie
+						</button>
 					</div>
 				</header>
 				<CalendarForm
@@ -65,14 +92,14 @@ export default class Calendar extends Component {
 						},
 						{
 							name: 'email',
-							label: 'Email',
+							label: 'Adres email',
 							type: 'email',
 							required: true,
 							pattern: '[0-9a-z_.-]+@[0-9a-z.-]+.[a-z]{2,3}',
 						},
 						{
 							name: 'date',
-							label: 'Data',
+							label: 'Data spotkania',
 							type: 'date',
 							required: true,
 							pattern:
@@ -80,17 +107,23 @@ export default class Calendar extends Component {
 						},
 						{
 							name: 'time',
-							label: 'Godzina',
+							label: 'Godzina spotkania',
 							type: 'time',
 							required: true,
 							pattern: '^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$',
 						},
 					]}
+					isShow={this.state.isFormShow}
+					closeForm={this.toogleShowForm}
 				/>
-				<CalendarList
-					meetings={this.state.meetings}
-					onClick={this.removeMeeting}
-				/>
+				{this.state.meetings.length > 0 ? (
+					<CalendarList
+						meetings={this.state.meetings}
+						removeMeeting={this.removeMeeting}
+					/>
+				) : (
+					<p>Brak zaplanowanych spotkań...</p>
+				)}
 			</section>
 		);
 	}

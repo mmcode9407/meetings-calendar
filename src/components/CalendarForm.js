@@ -1,4 +1,8 @@
 ﻿import React, { Component } from 'react';
+import './CalendarForm.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRectangleXmark } from '@fortawesome/free-regular-svg-icons';
+import { faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
 
 export default class CalendarForm extends Component {
 	state = {
@@ -33,20 +37,32 @@ export default class CalendarForm extends Component {
 
 		if (errors.length === 0) {
 			onSubmit(this.state.meeting);
-			this.setState({
-				meeting: {
-					firstName: '',
-					lastName: '',
-					email: '',
-					date: '',
-					time: '',
-				},
-				errors: [],
-			});
+			this.resetState();
 		} else {
 			this.setState({ errors: errors });
 		}
 	};
+
+	handleClose = (e) => {
+		e.preventDefault();
+
+		const { closeForm } = this.props;
+		closeForm();
+		this.resetState();
+	};
+
+	resetState() {
+		this.setState({
+			meeting: {
+				firstName: '',
+				lastName: '',
+				email: '',
+				date: '',
+				time: '',
+			},
+			errors: [],
+		});
+	}
 
 	validateForm() {
 		const { formItems } = this.props;
@@ -75,36 +91,76 @@ export default class CalendarForm extends Component {
 			item.includes(label)
 		);
 
-		return errorsByLabel.map((err, index) => <p key={index}>{err}</p>);
+		return errorsByLabel.map((err, index) => (
+			<p className='form__error-text' key={index}>
+				{err}
+			</p>
+		));
+	}
+
+	restrictPastDates() {
+		const date = new Date();
+		const day = this.formatText(date.getDate());
+		const month = this.formatText(date.getMonth() + 1);
+		const year = date.getFullYear();
+
+		return `${year}-${month}-${day}`;
+	}
+
+	formatText(unit) {
+		return `0${unit}`.length > 2 ? unit : `0${unit}`;
 	}
 
 	render() {
-		const { formItems } = this.props;
+		const { formItems, isShow } = this.props;
 
 		const inputs = formItems.map(({ name, label, type }, index) => {
 			return (
-				<div key={index}>
-					<label htmlFor={name}>{`${label}:`}</label>
+				<div key={index} className='form__item'>
+					<label
+						className='form__item-label'
+						htmlFor={name}>{`${label}:`}</label>
 					<input
+						className='form__item-input'
 						type={type}
+						min={type === 'date' ? this.restrictPastDates() : null}
 						name={name}
 						id={name}
 						value={this.state.meeting[name]}
 						onChange={this.inputChange}
 					/>
-					{this.state.errors.length > 0 ? this.showError(label) : null}
+					{this.state.errors.length > 0 ? (
+						<div className='form__error-box'>{this.showError(label)}</div>
+					) : null}
 				</div>
 			);
 		});
 
 		return (
-			<div>
-				<h2>Dodaj Spotkanie</h2>
-				<form onSubmit={this.handleSubmit} noValidate>
-					{inputs}
-					<button type='submit'>Dodaj Spotkanie</button>
-					<button>Anuluj</button>
-				</form>
+			<div
+				className={
+					isShow
+						? 'manager__form-shadow manager__form-shadow--show'
+						: 'manager__form-shadow'
+				}>
+				<div
+					className={
+						isShow ? 'manager__form manager__form--show' : 'manager__form'
+					}>
+					<h2 className='form__title'>Dodaj Spotkanie</h2>
+					<form className='form' onSubmit={this.handleSubmit}>
+						{inputs}
+						<div className='form__buttons'>
+							<button className='form__btn btn' type='submit'>
+								{' '}
+								<FontAwesomeIcon icon={faFloppyDisk} /> Dodaj spotkanie
+							</button>
+							<button className='form__btn btn' onClick={this.handleClose}>
+								<FontAwesomeIcon icon={faRectangleXmark} /> Anuluj
+							</button>
+						</div>
+					</form>
+				</div>
 			</div>
 		);
 	}

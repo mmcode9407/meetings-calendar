@@ -1,0 +1,90 @@
+﻿.manager__form-shadow {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.65);
+}
+
+.manager__form-shadow--show {
+	display: block;
+}
+
+.manager__form {
+	display: none;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	padding: 40px 0;
+	width: 600px;
+	background-color: #fff;
+	box-shadow: 0 0 10px #000;
+	border-radius: 5px;
+}
+
+.manager__form--show {
+	display: flex;
+}
+
+.form__title {
+	margin-bottom: 20px;
+	text-transform: uppercase;
+}
+
+.form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+}
+
+.form__item {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 5px;
+	width: 100%;
+	margin-bottom: 10px;
+}
+
+.form__item-input {
+	width: 100%;
+	max-width: 75%;
+	padding: 5px 20px;
+	font-size: 16px;
+	border-radius: 5px;
+	border: 1px solid #000;
+}
+
+.form__buttons {
+	display: flex;
+	gap: 20px;
+	margin-top: 10px;
+}
+
+.form__btn {
+	padding: 12px 25px;
+	background: none;
+	border: 1px solid #999;
+	border-radius: 5px;
+	font-size: 14px;
+	cursor: pointer;
+	transition: background-color 0.3s, color 0.3s;
+}
+
+.form__btn:hover {
+	background-color: #333;
+	color: #ddd;
+}
+
+.form__error-box {
+	text-align: center;
+	color: rgb(255, 0, 0);
+	font-size: 10px;
+}
