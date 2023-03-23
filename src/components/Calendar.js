@@ -3,6 +3,7 @@ import { getData, addData, removeData } from '../calendarProvider';
 import CalendarForm from './CalendarForm';
 import CalendarList from './CalendarList';
 import CalendarHeader from './CalendarHeader';
+import CalendarListItem from './CalendarListItem';
 import Button from './Button';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -53,6 +54,24 @@ export default class Calendar extends Component {
 		this.setState({ isFormShow: !this.state.isFormShow });
 	};
 
+	renderCalendarListContent() {
+		const { meetings } = this.state;
+
+		if (meetings.length > 0) {
+			return meetings.map((meeting) => {
+				return (
+					<CalendarListItem
+						meetingData={meeting}
+						removeMeeting={this.removeMeeting}
+						key={meeting.id}
+					/>
+				);
+			});
+		} else {
+			return <p>Brak zaplanowanych spotkań...</p>;
+		}
+	}
+
 	componentDidMount() {
 		getData().then((data) => {
 			this.setState({
@@ -84,14 +103,7 @@ export default class Calendar extends Component {
 					isShow={this.state.isFormShow}
 					closeForm={this.toogleShowForm}
 				/>
-				{this.state.meetings.length > 0 ? (
-					<CalendarList
-						meetings={this.state.meetings}
-						removeMeeting={this.removeMeeting}
-					/>
-				) : (
-					<p>Brak zaplanowanych spotkań...</p>
-				)}
+				<CalendarList content={this.renderCalendarListContent()} />
 			</section>
 		);
 	}
