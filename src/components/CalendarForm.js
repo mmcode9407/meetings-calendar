@@ -1,4 +1,5 @@
 ﻿import React, { Component } from 'react';
+import Button from './Button';
 import './CalendarForm.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRectangleXmark } from '@fortawesome/free-regular-svg-icons';
@@ -151,16 +152,21 @@ export default class CalendarForm extends Component {
 						isShow ? 'manager__form manager__form--show' : 'manager__form'
 					}>
 					<h2 className='form__title'>Dodaj Spotkanie</h2>
-					<form className='form' onSubmit={this.handleSubmit}>
+					<form className='form'>
 						{inputs}
 						<div className='form__buttons'>
-							<button className='form__btn btn' type='submit'>
-								{' '}
-								<FontAwesomeIcon icon={faFloppyDisk} /> Dodaj spotkanie
-							</button>
-							<button className='form__btn btn' onClick={this.handleClose}>
-								<FontAwesomeIcon icon={faRectangleXmark} /> Anuluj
-							</button>
+							<Button
+								onClick={this.handleSubmit}
+								className={'form__btn btn'}
+								text={'Dodaj spotkanie'}
+								icon={<FontAwesomeIcon icon={faFloppyDisk} />}
+							/>
+							<Button
+								onClick={this.handleClose}
+								className={'form__btn btn'}
+								text={'Anuluj'}
+								icon={<FontAwesomeIcon icon={faRectangleXmark} />}
+							/>
 						</div>
 					</form>
 				</div>
