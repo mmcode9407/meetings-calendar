@@ -1,5 +1,4 @@
 ﻿import React, { Component } from 'react';
-import { getData, addData, removeData } from '../../api';
 import CalendarForm from '../calendarForm';
 import { CalendarList, CalendarListItem } from '../calendarList';
 import CalendarHeader from '../calendarHeader';
@@ -9,6 +8,7 @@ import { FontAwesomeIcon, faPlus, faTrashCan } from '../icons';
 
 import './Calendar.css';
 import formItems from '../../data';
+import { getData, addData, removeData } from '../../api';
 
 export default class Calendar extends Component {
 	state = {
@@ -80,17 +80,15 @@ export default class Calendar extends Component {
 
 	render() {
 		return (
-			<section className='manager'>
+			<section className='wrapper'>
 				<CalendarHeader>
 					<Button
 						onClick={this.toogleShowForm}
-						className={'menu__btn btn'}
 						text={'Dodaj spotkanie'}
 						icon={<FontAwesomeIcon icon={faPlus} />}
 					/>
 					<Button
 						onClick={this.removeAllMeeting}
-						className={'menu__btn btn'}
 						text={'Usuń wszystkie'}
 						icon={<FontAwesomeIcon icon={faTrashCan} />}
 					/>

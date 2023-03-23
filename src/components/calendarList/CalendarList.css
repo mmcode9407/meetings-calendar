@@ -1,4 +1,4 @@
-﻿.manager__meetings-box {
+﻿.meetings-box {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: flex-start;
@@ -8,7 +8,7 @@
 	list-style-type: none;
 }
 
-.manager__meetings-item {
+.meetings-box__item {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -21,25 +21,10 @@
 	overflow: hidden;
 }
 
-.meetings__item-header {
+.item__header {
 	padding: 15px;
 	background-image: linear-gradient(340deg, #045de9 0%, #09c6f9 100%);
 	text-align: center;
 	width: 100%;
 	color: #fff;
-}
-
-.meetings__item-btn {
-	padding: 12px 25px;
-	background: none;
-	border: 1px solid #999;
-	border-radius: 5px;
-	font-size: 14px;
-	cursor: pointer;
-	transition: background-color 0.3s, color 0.3s;
-}
-
-.meetings__item-btn:hover {
-	background-color: #333;
-	color: #ddd;
 }

@@ -108,27 +108,20 @@ export default class CalendarForm extends Component {
 		return (
 			<div
 				className={
-					isShow
-						? 'manager__form-shadow manager__form-shadow--show'
-						: 'manager__form-shadow'
+					isShow ? 'form-box-shadow form-box-shadow--show' : 'form-box-shadow'
 				}>
-				<div
-					className={
-						isShow ? 'manager__form manager__form--show' : 'manager__form'
-					}>
-					<h2 className='form__title'>Dodaj Spotkanie</h2>
-					<form className='form'>
+				<div className={isShow ? 'form-box form-box--show' : 'form-box'}>
+					<h2 className='form-box__title'>Dodaj Spotkanie</h2>
+					<form className='form-box__form'>
 						{this.renderFormInputs()}
 						<div className='form__buttons'>
 							<Button
 								onClick={this.handleSubmit}
-								className={'form__btn btn'}
 								text={'Dodaj spotkanie'}
 								icon={<FontAwesomeIcon icon={faFloppyDisk} />}
 							/>
 							<Button
 								onClick={this.handleClose}
-								className={'form__btn btn'}
 								text={'Anuluj'}
 								icon={<FontAwesomeIcon icon={faRectangleXmark} />}
 							/>
