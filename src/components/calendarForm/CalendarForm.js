@@ -2,6 +2,7 @@
 import Button from '../button';
 import CalendarFormItem from './CalendarFormItem';
 import './CalendarForm.css';
+import validateForm from '../../validateForm';
 import { FontAwesomeIcon, faRectangleXmark, faFloppyDisk } from '../icons';
 
 export default class CalendarForm extends Component {
@@ -31,9 +32,9 @@ export default class CalendarForm extends Component {
 	handleSubmit = (e) => {
 		e.preventDefault();
 
-		const { onSubmit } = this.props;
+		const { onSubmit, formItems } = this.props;
 
-		const errors = this.validateForm();
+		const errors = validateForm(formItems, this.state.meeting);
 
 		if (errors.length === 0) {
 			onSubmit(this.state.meeting);
@@ -62,28 +63,6 @@ export default class CalendarForm extends Component {
 			},
 			errors: [],
 		});
-	}
-
-	validateForm() {
-		const { formItems } = this.props;
-		const errors = [];
-
-		formItems.forEach(({ name, label, required = false, pattern = null }) => {
-			if (required) {
-				if (this.state.meeting[name] === '') {
-					errors.push(`Dane w polu ${label} są wymagane!`);
-				}
-			}
-
-			if (pattern) {
-				const reg = new RegExp(pattern, 'gi');
-				if (!reg.test(this.state.meeting[name])) {
-					errors.push(`Dane w polu ${label} nie są w odpowiednim formacie!`);
-				}
-			}
-		});
-
-		return errors;
 	}
 
 	renderFormInputs() {
