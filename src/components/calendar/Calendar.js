@@ -37,15 +37,7 @@ export default class Calendar extends Component {
 	};
 
 	removeAllMeeting = () => {
-		this.state.meetings.forEach((meeting) => {
-			removeData(meeting.id).then(
-				getData().then((data) => {
-					this.setState({
-						meetings: data,
-					});
-				})
-			);
-		});
+		this.state.meetings.forEach((meeting) => this.removeMeeting(meeting.id));
 	};
 
 	toogleShowForm = () => {
