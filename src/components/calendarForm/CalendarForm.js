@@ -1,6 +1,7 @@
 ﻿import React, { Component } from 'react';
 import Button from '../button';
 import CalendarFormItem from './CalendarFormItem';
+import CalendarFormMessage from './CalendarFormMessage';
 import './CalendarForm.css';
 import validateForm from '../../validateForm';
 import { FontAwesomeIcon, faRectangleXmark, faFloppyDisk } from '../icons';
@@ -48,7 +49,9 @@ export default class CalendarForm extends Component {
 		e.preventDefault();
 
 		const { closeForm } = this.props;
-		closeForm();
+		closeForm('isFormShow', false);
+		closeForm('isShadowShow', false);
+		closeForm('isMessageShow', false);
 		this.resetState();
 	};
 
@@ -82,14 +85,16 @@ export default class CalendarForm extends Component {
 	}
 
 	render() {
-		const { isShow } = this.props;
+		const { isFormShow, isShadowShow, isMessageShow, openForm } = this.props;
 
 		return (
 			<div
 				className={
-					isShow ? 'form-box-shadow form-box-shadow--show' : 'form-box-shadow'
+					isShadowShow
+						? 'form-box-shadow form-box-shadow--show'
+						: 'form-box-shadow'
 				}>
-				<div className={isShow ? 'form-box form-box--show' : 'form-box'}>
+				<div className={isFormShow ? 'form-box form-box--show' : 'form-box'}>
 					<h2 className='form-box__title'>Dodaj Spotkanie</h2>
 					<form className='form-box__form'>
 						{this.renderFormInputs()}
@@ -107,6 +112,11 @@ export default class CalendarForm extends Component {
 						</div>
 					</form>
 				</div>
+				<CalendarFormMessage
+					isMessageShow={isMessageShow}
+					openForm={openForm}
+					onClick={this.handleClose}
+				/>
 			</div>
 		);
 	}

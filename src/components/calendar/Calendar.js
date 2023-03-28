@@ -14,6 +14,8 @@ export default class Calendar extends Component {
 	state = {
 		meetings: [],
 		isFormShow: false,
+		isShadowShow: false,
+		isMessageShow: false,
 	};
 
 	addMeeting = (data) => {
@@ -21,6 +23,8 @@ export default class Calendar extends Component {
 			this.setState((state) => {
 				return {
 					meetings: [...state.meetings, data],
+					isFormShow: false,
+					isMessageShow: true,
 				};
 			});
 		});
@@ -40,8 +44,8 @@ export default class Calendar extends Component {
 		this.state.meetings.forEach((meeting) => this.removeMeeting(meeting.id));
 	};
 
-	toogleShowForm = () => {
-		this.setState({ isFormShow: !this.state.isFormShow });
+	setShowPropValue = (propName, value) => {
+		this.setState({ [propName]: value });
 	};
 
 	renderCalendarListContent() {
@@ -75,7 +79,10 @@ export default class Calendar extends Component {
 			<section className='wrapper'>
 				<CalendarHeader>
 					<Button
-						onClick={this.toogleShowForm}
+						onClick={() => {
+							this.setShowPropValue('isFormShow', true);
+							this.setShowPropValue('isShadowShow', true);
+						}}
 						text={'Dodaj spotkanie'}
 						icon={<FontAwesomeIcon icon={faPlus} />}
 					/>
@@ -88,8 +95,11 @@ export default class Calendar extends Component {
 				<CalendarForm
 					onSubmit={this.addMeeting}
 					formItems={formItems}
-					isShow={this.state.isFormShow}
-					closeForm={this.toogleShowForm}
+					isFormShow={this.state.isFormShow}
+					closeForm={this.setShowPropValue}
+					openForm={this.setShowPropValue}
+					isShadowShow={this.state.isShadowShow}
+					isMessageShow={this.state.isMessageShow}
 				/>
 				<CalendarList content={this.renderCalendarListContent()} />
 			</section>
