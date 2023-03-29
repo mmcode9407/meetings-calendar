@@ -1,12 +1,12 @@
 ﻿import React, { Component } from 'react';
 
-export default class CalendarFormItem extends Component {
+export default class CalendarFormControls extends Component {
 	showError(label) {
-		const { formStateErrors } = this.props;
+		const {
+			formState: { errors },
+		} = this.props;
 
-		const errorsByLabel = formStateErrors.filter((item) =>
-			item.includes(label)
-		);
+		const errorsByLabel = errors.filter((item) => item.includes(label));
 
 		return errorsByLabel.map((err, index) => (
 			<p className='form__error-text' key={index}>
@@ -29,7 +29,11 @@ export default class CalendarFormItem extends Component {
 	}
 
 	render() {
-		const { item, formStateMeeting, inputChange, formStateErrors } = this.props;
+		const {
+			item,
+			formState: { meeting, errors },
+			inputChange,
+		} = this.props;
 
 		return (
 			<div className='form__item'>
@@ -43,10 +47,10 @@ export default class CalendarFormItem extends Component {
 					name={item.name}
 					placeholder={item.placeholder}
 					id={item.name}
-					value={formStateMeeting[item.name]}
+					value={meeting[item.name]}
 					onChange={(e) => inputChange(e)}
 				/>
-				{formStateErrors.length > 0 ? (
+				{errors.length > 0 ? (
 					<div className='form__error-box'>{this.showError(item.label)}</div>
 				) : null}
 			</div>

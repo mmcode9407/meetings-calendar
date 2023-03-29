@@ -7,15 +7,12 @@ import Button from '../button';
 import { FontAwesomeIcon, faPlus, faTrashCan } from '../icons';
 
 import './Calendar.css';
-import formItems from '../../data';
 import { getData, addData, removeData } from '../../api';
 
 export default class Calendar extends Component {
 	state = {
 		meetings: [],
 		isFormShow: false,
-		isShadowShow: false,
-		isMessageShow: false,
 	};
 
 	addMeeting = (data) => {
@@ -23,8 +20,6 @@ export default class Calendar extends Component {
 			this.setState((state) => {
 				return {
 					meetings: [...state.meetings, data],
-					isFormShow: false,
-					isMessageShow: true,
 				};
 			});
 		});
@@ -44,8 +39,8 @@ export default class Calendar extends Component {
 		this.state.meetings.forEach((meeting) => this.removeMeeting(meeting.id));
 	};
 
-	setShowPropValue = (propName, value) => {
-		this.setState({ [propName]: value });
+	closeForm = () => {
+		this.setState({ isFormShow: false });
 	};
 
 	renderCalendarListContent() {
@@ -80,8 +75,7 @@ export default class Calendar extends Component {
 				<CalendarHeader>
 					<Button
 						onClick={() => {
-							this.setShowPropValue('isFormShow', true);
-							this.setShowPropValue('isShadowShow', true);
+							this.setState({ isFormShow: true });
 						}}
 						text={'Dodaj spotkanie'}
 						icon={<FontAwesomeIcon icon={faPlus} />}
@@ -92,16 +86,11 @@ export default class Calendar extends Component {
 						icon={<FontAwesomeIcon icon={faTrashCan} />}
 					/>
 				</CalendarHeader>
-				<CalendarForm
-					onSubmit={this.addMeeting}
-					formItems={formItems}
-					isFormShow={this.state.isFormShow}
-					closeForm={this.setShowPropValue}
-					openForm={this.setShowPropValue}
-					isShadowShow={this.state.isShadowShow}
-					isMessageShow={this.state.isMessageShow}
-				/>
+				{this.state.isFormShow && (
+					<CalendarForm onSubmit={this.addMeeting} closeForm={this.closeForm} />
+				)}
 				<CalendarList content={this.renderCalendarListContent()} />
+				{this.state.isFormShow && <div className='shadow'></div>}
 			</section>
 		);
 	}

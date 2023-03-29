@@ -1,9 +1,11 @@
 ﻿import React, { Component } from 'react';
 import Button from '../button';
-import CalendarFormItem from './CalendarFormItem';
+// import CalendarFormItem from './CalendarFormItem';
 import CalendarFormMessage from './CalendarFormMessage';
+import CalendarFormBody from './CalendarFormBody';
 import './CalendarForm.css';
 import validateForm from '../../validateForm';
+import formItems from '../../data';
 import { FontAwesomeIcon, faRectangleXmark, faFloppyDisk } from '../icons';
 
 export default class CalendarForm extends Component {
@@ -16,6 +18,7 @@ export default class CalendarForm extends Component {
 			time: '',
 		},
 		errors: [],
+		content: 'form',
 	};
 
 	inputChange = (e) => {
@@ -33,12 +36,14 @@ export default class CalendarForm extends Component {
 	handleSubmit = (e) => {
 		e.preventDefault();
 
-		const { onSubmit, formItems } = this.props;
+		const { onSubmit } = this.props;
+		const { meeting } = this.state;
 
-		const errors = validateForm(formItems, this.state.meeting);
+		const errors = validateForm(formItems, meeting);
 
 		if (errors.length === 0) {
-			onSubmit(this.state.meeting);
+			onSubmit(meeting);
+			this.setContentValue();
 			this.resetState();
 		} else {
 			this.setState({ errors: errors });
@@ -49,9 +54,7 @@ export default class CalendarForm extends Component {
 		e.preventDefault();
 
 		const { closeForm } = this.props;
-		closeForm('isFormShow', false);
-		closeForm('isShadowShow', false);
-		closeForm('isMessageShow', false);
+		closeForm();
 		this.resetState();
 	};
 
@@ -68,56 +71,45 @@ export default class CalendarForm extends Component {
 		});
 	}
 
-	renderFormInputs() {
-		const { formItems } = this.props;
-
-		return formItems.map((item, index) => {
-			return (
-				<CalendarFormItem
-					key={index}
-					item={item}
-					formStateMeeting={this.state.meeting}
-					formStateErrors={this.state.errors}
-					inputChange={this.inputChange}
-				/>
-			);
+	setContentValue = () => {
+		this.setState((state) => {
+			if (state.content === 'form') {
+				return { content: 'confirm' };
+			} else {
+				return { content: 'form' };
+			}
 		});
-	}
+	};
 
 	render() {
-		const { isFormShow, isShadowShow, isMessageShow, openForm } = this.props;
+		const componentList = {
+			form: (
+				<CalendarFormBody formState = {this.state} inputChange={this.inputChange}>
+					<Button
+						onClick={this.handleSubmit}
+						text={'Dodaj spotkanie'}
+						icon={<FontAwesomeIcon icon={faFloppyDisk} />}
+					/>
+					<Button
+						onClick={this.handleClose}
+						text={'Anuluj'}
+						icon={<FontAwesomeIcon icon={faRectangleXmark} />}
+						/>
+				</CalendarFormBody>
+			),
+			confirm: (
+				<CalendarFormMessage>
+					<Button
+						onClick={this.setContentValue}
+						text={'Dodaj kolejne spotkanie'}
+						/>
+					<Button onClick={this.handleClose} text={'Zamknij'}
+						icon={<FontAwesomeIcon icon={faRectangleXmark} />}
+						/>
+				</CalendarFormMessage>
+			),
+		};
 
-		return (
-			<div
-				className={
-					isShadowShow
-						? 'form-box-shadow form-box-shadow--show'
-						: 'form-box-shadow'
-				}>
-				<div className={isFormShow ? 'form-box form-box--show' : 'form-box'}>
-					<h2 className='form-box__title'>Dodaj Spotkanie</h2>
-					<form className='form-box__form'>
-						{this.renderFormInputs()}
-						<div className='form__buttons'>
-							<Button
-								onClick={this.handleSubmit}
-								text={'Dodaj spotkanie'}
-								icon={<FontAwesomeIcon icon={faFloppyDisk} />}
-							/>
-							<Button
-								onClick={this.handleClose}
-								text={'Anuluj'}
-								icon={<FontAwesomeIcon icon={faRectangleXmark} />}
-							/>
-						</div>
-					</form>
-				</div>
-				<CalendarFormMessage
-					isMessageShow={isMessageShow}
-					openForm={openForm}
-					onClick={this.handleClose}
-				/>
-			</div>
-		);
+		return <>{componentList[this.state.content]}</>;
 	}
 }
