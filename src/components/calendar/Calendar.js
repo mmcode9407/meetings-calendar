@@ -39,8 +39,8 @@ export default class Calendar extends Component {
 		this.state.meetings.forEach((meeting) => this.removeMeeting(meeting.id));
 	};
 
-	closeForm = () => {
-		this.setState({ isFormShow: false });
+	toogleFormShow = () => {
+		this.setState({ isFormShow: !this.state.isFormShow });
 	};
 
 	renderCalendarListContent() {
@@ -74,9 +74,7 @@ export default class Calendar extends Component {
 			<section className='wrapper'>
 				<CalendarHeader>
 					<Button
-						onClick={() => {
-							this.setState({ isFormShow: true });
-						}}
+						onClick={this.toogleFormShow}
 						text={'Dodaj spotkanie'}
 						icon={<FontAwesomeIcon icon={faPlus} />}
 					/>
@@ -87,7 +85,10 @@ export default class Calendar extends Component {
 					/>
 				</CalendarHeader>
 				{this.state.isFormShow && (
-					<CalendarForm onSubmit={this.addMeeting} closeForm={this.closeForm} />
+					<CalendarForm
+						onSubmit={this.addMeeting}
+						closeForm={this.toogleFormShow}
+					/>
 				)}
 				<CalendarList content={this.renderCalendarListContent()} />
 				{this.state.isFormShow && <div className='shadow'></div>}
