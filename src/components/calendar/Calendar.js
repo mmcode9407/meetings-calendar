@@ -40,8 +40,14 @@ export default class Calendar extends Component {
 	};
 
 	toogleFormShow = () => {
-		this.setState({ isFormShow: !this.state.isFormShow });
-	};
+		this.setState({ isFormShow: !this.state.isFormShow }, () => this.setBodyOverflow());
+	}
+
+	setBodyOverflow() {
+		this.state.isFormShow
+			? (document.body.style.overflow = 'hidden')
+			: (document.body.style.overflow = 'auto');
+	}
 
 	renderCalendarListContent() {
 		const { meetings } = this.state;
