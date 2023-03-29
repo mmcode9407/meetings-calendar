@@ -1,8 +1,8 @@
-﻿const validateForm = (fields, formState) => {
+﻿const validateForm = (fields, data) => {
 	const errors = [];
 
 	fields.forEach(({ name, label, required = false, pattern = null }) => {
-		const value = formState[name];
+		const value = data[name];
 
 		if (required) {
 			if (value === '') {
