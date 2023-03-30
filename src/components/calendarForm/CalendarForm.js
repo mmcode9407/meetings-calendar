@@ -75,9 +75,9 @@ export default class CalendarForm extends Component {
 		this.setState((state) => {
 			if (state.content === 'form') {
 				return { content: 'confirm' };
-			} else {
-				return { content: 'form' };
 			}
+
+			return { content: 'form' };
 		});
 	};
 
