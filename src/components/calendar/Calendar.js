@@ -31,16 +31,7 @@ export default class Calendar extends Component {
 	};
 
 	removeMeeting = (id) => {
-		removeData(id).then(
-			getData().then((data) => {
-				this.setState(
-					{
-						meetings: data,
-					},
-					() => this.sortMeetings(this.state.meetings)
-				);
-			})
-		);
+		removeData(id).then(getData().then((data) => this.setMeetingsState(data)));
 	};
 
 	removeAllMeeting = () => {
@@ -69,6 +60,15 @@ export default class Calendar extends Component {
 		});
 	}
 
+	setMeetingsState(data) {
+		this.setState(
+			{
+				meetings: data,
+			},
+			() => this.sortMeetings(this.state.meetings)
+		);
+	}
+
 	renderCalendarListContent() {
 		const { meetings } = this.state;
 
@@ -88,14 +88,7 @@ export default class Calendar extends Component {
 	}
 
 	componentDidMount() {
-		getData().then((data) => {
-			this.setState(
-				{
-					meetings: data,
-				},
-				() => this.sortMeetings(this.state.meetings)
-			);
-		});
+		getData().then((data) => this.setMeetingsState(data));
 	}
 
 	render() {
