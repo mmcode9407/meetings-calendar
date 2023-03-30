@@ -1,4 +1,5 @@
 ﻿import React, { Component } from 'react';
+import { getTodayDate } from '../../constant';
 
 export default class CalendarFormControls extends Component {
 	showError(label) {
@@ -13,19 +14,6 @@ export default class CalendarFormControls extends Component {
 				{err}
 			</p>
 		));
-	}
-
-	restrictPastDates() {
-		const date = new Date();
-		const day = this.formatText(date.getDate());
-		const month = this.formatText(date.getMonth() + 1);
-		const year = date.getFullYear();
-
-		return `${year}-${month}-${day}`;
-	}
-
-	formatText(unit) {
-		return `0${unit}`.length > 2 ? unit : `0${unit}`;
 	}
 
 	render() {
@@ -43,7 +31,7 @@ export default class CalendarFormControls extends Component {
 				<input
 					className='form__item-input'
 					type={item.type}
-					min={item.type === 'date' ? this.restrictPastDates() : null}
+					min={item.type === 'date' ? getTodayDate() : null}
 					name={item.name}
 					placeholder={item.placeholder}
 					id={item.name}
