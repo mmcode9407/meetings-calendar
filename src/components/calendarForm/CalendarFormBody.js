@@ -19,10 +19,15 @@ export default class CalendarFormBody extends Component {
 	}
 
 	render() {
-		const { children } = this.props;
+		const { children, isUniqueMeeting } = this.props;
 		return (
 			<div className='form-box'>
 				<h2 className='form-box__title'>Dodaj Spotkanie</h2>
+				{isUniqueMeeting && (
+					<p className='form-box__error-unique'>
+						Spotkanie w podanym terminie już istnieje!
+					</p>
+				)}
 				<form className='form-box__form'>
 					{this.renderFormInputs()}
 					<div className='form__buttons'>{children}</div>

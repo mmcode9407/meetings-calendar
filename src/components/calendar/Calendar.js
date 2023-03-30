@@ -44,6 +44,12 @@ export default class Calendar extends Component {
 		);
 	};
 
+	checkDuplicateMeeting = ({ date, time }) => {
+		return this.state.meetings.some((element) => {
+			return element.date === date && element.time === time;
+		});
+	};
+
 	setBodyOverflow() {
 		this.state.isFormShow
 			? (document.body.style.overflowY = 'hidden')
@@ -112,6 +118,7 @@ export default class Calendar extends Component {
 						<CalendarForm
 							onSubmit={this.addMeeting}
 							closeForm={this.toogleFormShow}
+							additionalValidation={this.checkDuplicateMeeting}
 						/>
 					</Modal>
 				)}

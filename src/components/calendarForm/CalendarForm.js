@@ -1,6 +1,5 @@
 ﻿import React, { Component } from 'react';
 import Button from '../button';
-// import CalendarFormItem from './CalendarFormItem';
 import CalendarFormMessage from './CalendarFormMessage';
 import CalendarFormBody from './CalendarFormBody';
 import './CalendarForm.css';
@@ -36,12 +35,12 @@ export default class CalendarForm extends Component {
 	handleSubmit = (e) => {
 		e.preventDefault();
 
-		const { onSubmit } = this.props;
+		const { onSubmit, additionalValidation } = this.props;
 		const { meeting } = this.state;
 
 		const errors = validateForm(formItems, meeting);
 
-		if (errors.length === 0) {
+		if (errors.length === 0 && !additionalValidation(meeting)) {
 			const data = this.createDataForAPI();
 			onSubmit(data);
 			this.setContentValue();
@@ -93,7 +92,10 @@ export default class CalendarForm extends Component {
 	render() {
 		const componentList = {
 			form: (
-				<CalendarFormBody formState={this.state} inputChange={this.inputChange}>
+				<CalendarFormBody
+					formState={this.state}
+					inputChange={this.inputChange}
+					isUniqueMeeting={this.props.additionalValidation(this.state.meeting)}>
 					<Button
 						onClick={this.handleSubmit}
 						text={'Dodaj spotkanie'}
