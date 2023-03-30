@@ -42,7 +42,8 @@ export default class CalendarForm extends Component {
 		const errors = validateForm(formItems, meeting);
 
 		if (errors.length === 0) {
-			onSubmit(meeting);
+			const data = this.createDataForAPI();
+			onSubmit(data);
 			this.setContentValue();
 			this.resetState();
 		} else {
@@ -57,6 +58,14 @@ export default class CalendarForm extends Component {
 		closeForm();
 		this.resetState();
 	};
+
+	createDataForAPI() {
+		const { meeting } = this.state;
+		return {
+			...meeting,
+			timeStamp: new Date(`${meeting.date} ${meeting.time}`).getTime(),
+		};
+	}
 
 	resetState() {
 		this.setState({
@@ -84,7 +93,7 @@ export default class CalendarForm extends Component {
 	render() {
 		const componentList = {
 			form: (
-				<CalendarFormBody formState = {this.state} inputChange={this.inputChange}>
+				<CalendarFormBody formState={this.state} inputChange={this.inputChange}>
 					<Button
 						onClick={this.handleSubmit}
 						text={'Dodaj spotkanie'}
@@ -94,7 +103,7 @@ export default class CalendarForm extends Component {
 						onClick={this.handleClose}
 						text={'Anuluj'}
 						icon={<FontAwesomeIcon icon={faRectangleXmark} />}
-						/>
+					/>
 				</CalendarFormBody>
 			),
 			confirm: (
@@ -102,10 +111,12 @@ export default class CalendarForm extends Component {
 					<Button
 						onClick={this.setContentValue}
 						text={'Dodaj kolejne spotkanie'}
-						/>
-					<Button onClick={this.handleClose} text={'Zamknij'}
+					/>
+					<Button
+						onClick={this.handleClose}
+						text={'Zamknij'}
 						icon={<FontAwesomeIcon icon={faRectangleXmark} />}
-						/>
+					/>
 				</CalendarFormMessage>
 			),
 		};

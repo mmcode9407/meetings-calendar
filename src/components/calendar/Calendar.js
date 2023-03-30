@@ -19,20 +19,26 @@ export default class Calendar extends Component {
 
 	addMeeting = (data) => {
 		addData(data).then((data) => {
-			this.setState((state) => {
-				return {
-					meetings: [...state.meetings, data],
-				};
-			});
+			this.setState(
+				(state) => {
+					return {
+						meetings: [...state.meetings, data],
+					};
+				},
+				() => this.sortMeetings(this.state.meetings)
+			);
 		});
 	};
 
 	removeMeeting = (id) => {
 		removeData(id).then(
 			getData().then((data) => {
-				this.setState({
-					meetings: data,
-				});
+				this.setState(
+					{
+						meetings: data,
+					},
+					() => this.sortMeetings(this.state.meetings)
+				);
 			})
 		);
 	};
@@ -51,6 +57,16 @@ export default class Calendar extends Component {
 		this.state.isFormShow
 			? (document.body.style.overflowY = 'hidden')
 			: (document.body.style.overflowY = 'auto');
+	}
+
+	sortMeetings(meetings) {
+		const sortedMeetings = meetings.sort((a, b) => {
+			return a.timeStamp - b.timeStamp;
+		});
+
+		this.setState({
+			meetings: sortedMeetings,
+		});
 	}
 
 	renderCalendarListContent() {
@@ -73,9 +89,12 @@ export default class Calendar extends Component {
 
 	componentDidMount() {
 		getData().then((data) => {
-			this.setState({
-				meetings: data,
-			});
+			this.setState(
+				{
+					meetings: data,
+				},
+				() => this.sortMeetings(this.state.meetings)
+			);
 		});
 	}
 
