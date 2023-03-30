@@ -2,6 +2,8 @@
 import CalendarForm from '../calendarForm';
 import { CalendarList, CalendarListItem } from '../calendarList';
 import CalendarHeader from '../calendarHeader';
+import Modal from '../modal';
+
 import Button from '../button';
 
 import { FontAwesomeIcon, faPlus, faTrashCan } from '../icons';
@@ -40,13 +42,15 @@ export default class Calendar extends Component {
 	};
 
 	toogleFormShow = () => {
-		this.setState({ isFormShow: !this.state.isFormShow }, () => this.setBodyOverflow());
-	}
+		this.setState({ isFormShow: !this.state.isFormShow }, () =>
+			this.setBodyOverflow()
+		);
+	};
 
 	setBodyOverflow() {
 		this.state.isFormShow
-			? (document.body.style.overflow = 'hidden')
-			: (document.body.style.overflow = 'auto');
+			? (document.body.style.overflowY = 'hidden')
+			: (document.body.style.overflowY = 'auto');
 	}
 
 	renderCalendarListContent() {
@@ -90,14 +94,15 @@ export default class Calendar extends Component {
 						icon={<FontAwesomeIcon icon={faTrashCan} />}
 					/>
 				</CalendarHeader>
-				{this.state.isFormShow && (
-					<CalendarForm
-						onSubmit={this.addMeeting}
-						closeForm={this.toogleFormShow}
-					/>
-				)}
 				<CalendarList content={this.renderCalendarListContent()} />
-				{this.state.isFormShow && <div className='shadow'></div>}
+				{this.state.isFormShow && (
+					<Modal>
+						<CalendarForm
+							onSubmit={this.addMeeting}
+							closeForm={this.toogleFormShow}
+						/>
+					</Modal>
+				)}
 			</section>
 		);
 	}
