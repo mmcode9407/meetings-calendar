@@ -5,6 +5,7 @@ import CalendarFormBody from './CalendarFormBody';
 import './CalendarForm.css';
 import validateForm from '../../validateForm';
 import formItems from '../../data';
+import { getTodayDate, getCurrentTime } from '../../constant';
 import { FontAwesomeIcon, faRectangleXmark, faFloppyDisk } from '../icons';
 
 export default class CalendarForm extends Component {
@@ -72,8 +73,8 @@ export default class CalendarForm extends Component {
 				firstName: '',
 				lastName: '',
 				email: '',
-				date: '',
-				time: '',
+				date: getTodayDate(),
+				time: getCurrentTime(),
 			},
 			errors: [],
 		});
@@ -88,6 +89,16 @@ export default class CalendarForm extends Component {
 			return { content: 'form' };
 		});
 	};
+
+	componentDidMount() {
+		this.setState({
+			meeting: {
+				...this.state.meeting,
+				date: getTodayDate(),
+				time: getCurrentTime(),
+			},
+		});
+	}
 
 	render() {
 		const componentList = {
